@@ -15,7 +15,7 @@ export const AppContainer = styled.div`
 `
 
 export const ColumnContainer = styled.div`
-  background-color: #2b2cf0;
+  background-color: #ebecf0;
   width: 300px;
   min-height: 40px;
   margin-right: 20px;
