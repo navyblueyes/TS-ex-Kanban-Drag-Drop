@@ -1,19 +1,11 @@
-import { createContext, useContext, FC } from "react"
-
-type Task = {
-  id: string
-  text: string
-}
-
-type List = {
-  id: string
-  text: string
-  tasks: Task[]
-}
+import { appStateReducer, AppState, List, Task } from "./appStateReducer"
+import { createContext, useReducer, useContext, Dispatch, FC } from "react"
+import { Action } from "./actions"
 
 type AppStateContextProps = {
   lists: List[]
   getTasksByListId(id: string): Task[]
+  dispatch: Dispatch<Action>
 }
 
 const AppStateContext = createContext<AppStateContextProps>(
@@ -40,10 +32,6 @@ const appData: AppState = {
   ],
 }
 
-export type AppState = {
-  lists: List[]
-}
-
 export const AppStateProvider: FC = ({ children }) => {
   const { lists } = appData
 
@@ -52,7 +40,7 @@ export const AppStateProvider: FC = ({ children }) => {
   }
 
   return (
-    <AppStateContext.Provider value={{ lists, getTasksByListId }}>
+    <AppStateContext.Provider value={{ lists, getTasksByListId, dispatch }}>
       {children}
     </AppStateContext.Provider>
   )
