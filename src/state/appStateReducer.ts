@@ -45,6 +45,14 @@ export const appStateReducer = (
     default: {
       break
     }
+    case "MOVE_LIST": {
+      const { draggerId, hoverId } = action.payload
+      const dragIndex = findItemIndexById(draft.lists, draggerId)
+      const hoverIndex = findItemIndexById(draft.lists, hoverId)
+
+      draft.lists = moveItem(draft.lists, dragIndex, hoverIndex)
+      break
+    }
   }
 }
 

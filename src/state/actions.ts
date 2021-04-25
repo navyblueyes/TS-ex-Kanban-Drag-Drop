@@ -26,3 +26,11 @@ export const addList = (text: string): Action => ({
   type: "ADD_LIST",
   payload: text,
 })
+
+export const moveList = (draggerId: string, hoverId: string): Action => ({
+  type: "MOVE_LIST",
+  payload: {
+    draggerId,
+    hoverId,
+  },
+})
