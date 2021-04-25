@@ -1,6 +1,7 @@
 import { Action } from "./actions"
 import { nanoid } from "nanoid"
-import { findItemIndexById, moveItem } from "../utils/arrayUtils"}
+import { findItemIndexById, moveItem } from "../utils/arrayUtils"
+import { DragItem } from "../DragItem"
 
 export type Task = {
   id: string
@@ -15,6 +16,7 @@ export type List = {
 
 export type AppState = {
   lists: List[]
+  draggedItem: DragItem | null
 }
 
 // using Immer to generate a mutable `draft` to include nanoid's generated id
@@ -51,6 +53,10 @@ export const appStateReducer = (
       const hoverIndex = findItemIndexById(draft.lists, hoverId)
 
       draft.lists = moveItem(draft.lists, dragIndex, hoverIndex)
+      break
+    }
+    case "SET_DRAGGED_ITEM": {
+      draft.draggedItem = action.payload
       break
     }
   }

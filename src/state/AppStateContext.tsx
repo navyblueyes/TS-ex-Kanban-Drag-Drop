@@ -2,9 +2,11 @@ import { appStateReducer, AppState, List, Task } from "./appStateReducer"
 import { createContext, useReducer, useContext, Dispatch, FC } from "react"
 import { Action } from "./actions"
 import { useImmerReducer } from "use-immer"
+import { DragItem } from "../DragItem"
 
 type AppStateContextProps = {
   lists: List[]
+  draggedItem: DragItem | null
   getTasksByListId(id: string): Task[]
   dispatch: Dispatch<Action>
 }
@@ -31,19 +33,22 @@ const appData: AppState = {
       tasks: [{ id: "c3", text: "Begin to use static typing" }],
     },
   ],
+  draggedItem: null,
 }
 
-const [state, dispatch] = useImmerReducer(appStateReducer, appData)
-
 export const AppStateProvider: FC = ({ children }) => {
-  const { lists } = appData
+  const [state, dispatch] = useImmerReducer(appStateReducer, appData)
+
+  const { draggedItem, lists } = appData
 
   const getTasksByListId = (id: string) => {
     return lists.find((list) => list.id === id)?.tasks || []
   }
 
   return (
-    <AppStateContext.Provider value={{ lists, getTasksByListId, dispatch }}>
+    <AppStateContext.Provider
+      value={{ draggedItem, lists, getTasksByListId, dispatch }}
+    >
       {children}
     </AppStateContext.Provider>
   )

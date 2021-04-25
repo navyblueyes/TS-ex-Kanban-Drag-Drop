@@ -1,5 +1,7 @@
 // Define two actions -- adding a list; adding a task
 
+import { DragItem } from "../DragItem"
+
 export type Action =
   | {
       type: "ADD_LIST"
@@ -12,6 +14,10 @@ export type Action =
   | {
       type: "MOVE_LIST"
       payload: { draggerId: string; hoverId: string }
+    }
+  | {
+      type: "SET_DRAGGED_ITEM"
+      payload: DragItem | null
     }
 
 export const addTask = (text: string, listId: string): Action => ({
@@ -27,10 +33,17 @@ export const addList = (text: string): Action => ({
   payload: text,
 })
 
+// draggerId is a way to store column's id
+// hoverId is a way to store the id of the position's id
 export const moveList = (draggerId: string, hoverId: string): Action => ({
   type: "MOVE_LIST",
   payload: {
     draggerId,
     hoverId,
   },
+})
+
+export const setDraggedItem = (draggedItem: DragItem | null): Action => ({
+  type: "SET_DRAGGED_ITEM",
+  payload: draggedItem,
 })
