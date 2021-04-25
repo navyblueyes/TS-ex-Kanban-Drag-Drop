@@ -2,9 +2,11 @@ import { ColumnContainer, ColumnTitle } from "./styles"
 import { AddNewItem } from "./AddNewItem"
 import { useAppState } from "./state/AppStateContext"
 import { Card } from "./Card"
-import { addTask } from "./state/actions"
 import { useRef } from "react"
 import { useItemDrag } from "./utils/useItemDrag"
+import { useDrop } from "react-dnd"
+import { moveList, addTask } from "./state/actions"
+import { isHidden } from "./utils/isHidden"
 
 type ColumnProps = {
   text: string
@@ -17,12 +19,27 @@ export const Column = ({ text, id }: ColumnProps) => {
   // ref is for grabbing the DOM element (HTML div) beyond React's VirtualDOM
   const ref = useRef<HTMLDivElement>(null)
 
+  const [, drop] = useDrop({
+    accept: "COLUMN",
+    hover() {
+      if (!draggedItem) {
+        return
+      }
+      if (draggedItem.type === "COLUMN") {
+        if (draggedItem.id === id) {
+          return
+        }
+        dispatch(moveList(draggedItem.id, id))
+      }
+    },
+  })
+
   const { drag } = useItemDrag({ type: "COLUMN", id, text })
 
-  drag(ref)
+  drag(drop(ref))
 
   return (
-    <ColumnContainer ref={ref}>
+    <ColumnContainer ref={ref} isHidden={isHidden(draggedItem, "COLUMN", id)}>
       <ColumnTitle> {text} </ColumnTitle>
       {tasks.map((task) => (
         <Card text={task.text} key={task.id} id={task.id} />
