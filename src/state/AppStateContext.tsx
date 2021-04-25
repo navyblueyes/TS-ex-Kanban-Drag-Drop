@@ -1,6 +1,7 @@
 import { appStateReducer, AppState, List, Task } from "./appStateReducer"
 import { createContext, useReducer, useContext, Dispatch, FC } from "react"
 import { Action } from "./actions"
+import { useImmerReducer } from "use-immer"
 
 type AppStateContextProps = {
   lists: List[]
@@ -31,6 +32,8 @@ const appData: AppState = {
     },
   ],
 }
+
+const [state, dispatch] = useImmerReducer(appStateReducer, appData)
 
 export const AppStateProvider: FC = ({ children }) => {
   const { lists } = appData
