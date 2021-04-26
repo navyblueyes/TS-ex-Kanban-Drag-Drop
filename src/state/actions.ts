@@ -13,13 +13,13 @@ export type Action =
     }
   | {
       type: "MOVE_LIST"
-      payload: { draggerId: string; hoverId: string }
+      payload: { draggedId: string; hoverId: string }
     }
   | {
       type: "MOVE_TASK"
       payload: {
-        draggerItemId: string
-        hoverItemId: string | null
+        draggedItemId: string
+        hoveredItemId: string | null
         sourceColumnId: string
         targetColumnId: string
       }
@@ -42,12 +42,12 @@ export const addList = (text: string): Action => ({
   payload: text,
 })
 
-// draggerId is a way to store column's id
+// draggedId is a way to store column's id
 // hoverId is a way to store the id of the position's id
-export const moveList = (draggerId: string, hoverId: string): Action => ({
+export const moveList = (draggedId: string, hoverId: string): Action => ({
   type: "MOVE_LIST",
   payload: {
-    draggerId,
+    draggedId,
     hoverId,
   },
 })
@@ -58,16 +58,16 @@ export const setDraggedItem = (draggedItem: DragItem | null): Action => ({
 })
 
 export const moveTask = (
-  draggerItemId: string,
-  hoverItemId: string | null,
+  draggedItemId: string,
+  hoveredItemId: string | null,
   sourceColumnId: string,
   targetColumnId: string
-  ): Action => ({
-    type: "MOVE_TASK",
-    payload: {
-      draggerItemId,
-      hoverItemId,
-      sourceColumnId,
-      targetColumnId
-  }
+): Action => ({
+  type: "MOVE_TASK",
+  payload: {
+    draggedItemId,
+    hoveredItemId,
+    sourceColumnId,
+    targetColumnId,
+  },
 })
