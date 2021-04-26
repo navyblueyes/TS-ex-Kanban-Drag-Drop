@@ -1,24 +1,23 @@
+import { useRef } from "react"
 import { ColumnContainer, ColumnTitle } from "./styles"
-import { AddNewItem } from "./AddNewItem"
 import { useAppState } from "./state/AppStateContext"
 import { Card } from "./Card"
-import { useRef } from "react"
+import { AddNewItem } from "./AddNewItem"
 import { useItemDrag } from "./utils/useItemDrag"
 import { useDrop } from "react-dnd"
-import { moveList, addTask } from "./state/actions"
 import { isHidden } from "./utils/isHidden"
+import { moveList, addTask } from "./state/actions"
 
 type ColumnProps = {
   text: string
   id: string
+  isPreview?: boolean
 }
 
-export const Column = ({ text, id }: ColumnProps) => {
+export const Column = ({ text, id, isPreview }: ColumnProps) => {
   const { draggedItem, getTasksByListId, dispatch } = useAppState()
   const tasks = getTasksByListId(id)
-  // ref is for grabbing the DOM element (HTML div) beyond React's VirtualDOM
   const ref = useRef<HTMLDivElement>(null)
-
   const [, drop] = useDrop({
     accept: "COLUMN",
     hover() {
@@ -29,9 +28,10 @@ export const Column = ({ text, id }: ColumnProps) => {
         if (draggedItem.id === id) {
           return
         }
+
         dispatch(moveList(draggedItem.id, id))
       }
-    },
+    }
   })
 
   const { drag } = useItemDrag({ type: "COLUMN", id, text })
@@ -39,14 +39,18 @@ export const Column = ({ text, id }: ColumnProps) => {
   drag(drop(ref))
 
   return (
-    <ColumnContainer ref={ref} isHidden={isHidden(draggedItem, "COLUMN", id)}>
-      <ColumnTitle> {text} </ColumnTitle>
+    <ColumnContainer
+      isPreview={isPreview}
+      ref={ref}
+      isHidden={isHidden(draggedItem, "COLUMN", id, isPreview)}
+    >
+      <ColumnTitle>{text}</ColumnTitle>
       {tasks.map((task) => (
-        <Card text={task.text} key={task.id} id={task.id} />
+        <Card text={task.text} key={task.id} />
       ))}
       <AddNewItem
+        toggleButtonText="+ Add another card"
         onAdd={(text) => dispatch(addTask(text, id))}
-        toggleButtonText="+ Add another task"
         dark
       />
     </ColumnContainer>
