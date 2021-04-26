@@ -16,8 +16,8 @@ type DragPreviewContainerProps = {
 }
 
 export const DragPreviewContainer = styled.div<DragPreviewContainerProps>`
-  transform: ${props => (props.isPreview ? "rotate(5deg)" : undefined)};
-  opacity: ${props => (props.isHidden ? 0 : 1)};
+  opacity: ${(props) => (props.isHidden ? 0.3 : 1)};
+  transform: ${(props) => (props.isPreview ? "rotate(2deg)" : undefined)};
 `
 
 type DragPreviewWrapperProps = {
@@ -30,8 +30,8 @@ type DragPreviewWrapperProps = {
 export const DragPreviewWrapper = styled.div.attrs<DragPreviewWrapperProps>(
   ({ position: { x, y } }) => ({
     style: {
-      transform: `translate(${x}px, ${y}px)`
-    }
+      transform: `translate(${x}px, ${y}px)`,
+    },
   })
 )<DragPreviewWrapperProps>``
 
@@ -69,7 +69,7 @@ export const AddItemButton = styled.button<AddItemButtonProps>`
   background-color: #ffffff3d;
   border-radius: 3px;
   border: none;
-  color: ${props => (props.dark ? "#000" : "#fff")};
+  color: ${(props) => (props.dark ? "#000" : "#fff")};
   cursor: pointer;
   max-width: 300px;
   padding: 10px 12px;
@@ -92,7 +92,7 @@ export const NewItemFormContainer = styled.div`
 export const NewItemInput = styled.input`
   border-radius: 3px;
   border: none;
-  box-shadow: #091e4240 0px 1px 0px 0px; 
+  box-shadow: #091e4240 0px 1px 0px 0px;
   margin-bottom: 0.5rem;
   padding: 0.5rem 1rem;
   width: 100%;

@@ -31,7 +31,7 @@ export const Column = ({ text, id, isPreview }: ColumnProps) => {
 
         dispatch(moveList(draggedItem.id, id))
       }
-    }
+    },
   })
 
   const { drag } = useItemDrag({ type: "COLUMN", id, text })
@@ -46,7 +46,7 @@ export const Column = ({ text, id, isPreview }: ColumnProps) => {
     >
       <ColumnTitle>{text}</ColumnTitle>
       {tasks.map((task) => (
-        <Card text={task.text} key={task.id} />
+        <Card id={task.id} columnId={id} text={task.text} key={task.id} />
       ))}
       <AddNewItem
         toggleButtonText="+ Add another card"
