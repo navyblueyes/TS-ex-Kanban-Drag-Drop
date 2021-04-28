@@ -9,7 +9,7 @@ type InjectedProps = {
 type PropsWithoutInject<TBaseProps> = Omit<TBaseProps, keyof InjectedProps>
 
 export function withInitialState<TProps>(
-  WrappedComponent: ComponentType<TProps & InjectedProps>
+  WrappedComponent: ComponentType<PropsWithoutInject<TProps> & InjectedProps>
 ) {
   return (props: PropsWithoutInject<TProps>) => {
     const [initialState, setInitialState] = useState<AppState>({
@@ -28,6 +28,7 @@ export function withInitialState<TProps>(
         } catch (e) {
           setError(e)
         }
+        setIsLoading(false)
       }
       fetchInitialState()
     }, [])
